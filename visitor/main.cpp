@@ -1,34 +1,34 @@
 #include <string>
 #include <iostream>
 
-
 using namespace std;
 
-
-class Visitor { // интерфейс для всех посетителей
+class Visitor { // interface for all visitors
 public:
-	virtual string visitClassHero(const string &myText) = 0;
-	virtual string visitClassWall(string &myText) = 0;
+	virtual string visitClassHero(const string& myText) = 0;
+	virtual string visitClassWall(string& myText) = 0;
 };
 
-class ObjectVisitor : public Visitor { // реализация одного из посетителей
+class ObjectVisitor : public Visitor { // implementation of one of the visitors
 public:
 	ObjectVisitor() = default;
 	~ObjectVisitor() = default;
-	string visitClassHero(const string& myText) override { // при посещении класса Hero просто распечатаем его текст
+
+	string visitClassHero(const string& myText) override { // when visiting the Hero class, just print its text
 		cout << myText;
 		return myText;
 	}
-	string visitClassWall(string& myText) override { // при посещении класса Wall мы поменяем значение его поля myText
+
+	string visitClassWall(string& myText) override { // when visiting the Wall class, change the value of its myText field
 		myText = "hello, i'm a wall\n";
 		cout << myText;
 		return myText;
 	}
 };
 
-class Visited { // интерфейс посещаемого класса
+class Visited { // interface for visitable classes
 public:
-	virtual void accept(Visitor* vs) = 0; // метод, вызывающий конкретного посетителя
+	virtual void accept(Visitor* vs) = 0; // method that invokes a specific visitor
 };
 
 class Hero : public Visited {
@@ -39,7 +39,7 @@ public:
 	~Hero() = default;
 
 	void accept(Visitor* vs) override {
-		vs->visitClassHero(myText); // вызываем посетителя ObjectVisitor с методом visitClassHero
+		vs->visitClassHero(myText); // call the ObjectVisitor with the visitClassHero method
 	}
 };
 
@@ -51,14 +51,12 @@ public:
 	~Wall() = default;
 
 	void accept(Visitor* vs) override {
-		vs->visitClassWall(myText); // вызываем посетителя ObjectVisitor с методом visitClassWall
-		cout << myText; // проверяем, правильно ли сработал посетитель ObjectVisitor
+		vs->visitClassWall(myText); // call the ObjectVisitor with the visitClassWall method
+		cout << myText; // check if ObjectVisitor worked correctly
 	}
 };
 
-
 int main() {
-
 	ObjectVisitor* ov = new ObjectVisitor;
 	Hero hero;
 	Wall wall;
