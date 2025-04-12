@@ -5,30 +5,30 @@
 using namespace std;
 
 
-class Visitor {
+class Visitor { // интерфейс для всех посетителей
 public:
 	virtual string visitClassHero(const string &myText) = 0;
 	virtual string visitClassWall(string &myText) = 0;
 };
 
-class ObjectVisitor : public Visitor {
+class ObjectVisitor : public Visitor { // реализация одного из посетителей
 public:
 	ObjectVisitor() = default;
 	~ObjectVisitor() = default;
-	string visitClassHero(const string& myText) override {
+	string visitClassHero(const string& myText) override { // при посещении класса Hero просто распечатаем его текст
 		cout << myText;
 		return myText;
 	}
-	string visitClassWall(string& myText) override {
+	string visitClassWall(string& myText) override { // при посещении класса Wall мы поменяем значение его поля myText
 		myText = "hello, i'm a wall\n";
 		cout << myText;
 		return myText;
 	}
 };
 
-class Visited {
+class Visited { // интерфейс посещаемого класса
 public:
-	virtual void accept(Visitor* vs) = 0;
+	virtual void accept(Visitor* vs) = 0; // метод, вызывающий конкретного посетителя
 };
 
 class Hero : public Visited {
@@ -39,7 +39,7 @@ public:
 	~Hero() = default;
 
 	void accept(Visitor* vs) override {
-		vs->visitClassHero(myText);
+		vs->visitClassHero(myText); // вызываем посетителя ObjectVisitor с методом visitClassHero
 	}
 };
 
@@ -51,8 +51,8 @@ public:
 	~Wall() = default;
 
 	void accept(Visitor* vs) override {
-		vs->visitClassWall(myText);
-		cout << myText;
+		vs->visitClassWall(myText); // вызываем посетителя ObjectVisitor с методом visitClassWall
+		cout << myText; // проверяем, правильно ли сработал посетитель ObjectVisitor
 	}
 };
 
